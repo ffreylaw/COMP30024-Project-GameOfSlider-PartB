@@ -41,25 +41,27 @@ public class AStar {
             current = getLowestCostCell();
             closed.add(current);
             open.remove(current);
+            
+            //System.out.println("curr: x:"+current.getX()+" y:"+current.getY()+" piece:"+current.getPiece());
 
             if ((current.getX() == tx) && (current.getY() == ty)) {
                 return calculatePath(grid[sx][sy], current);
             }
 
-            List<AStarCell> adjacentNodes = getAdjacent(current);
-            for (AStarCell currentAdj: adjacentNodes) {
-                if (!open.contains(currentAdj)) {
-                    currentAdj.setPrev(current);
-                    currentAdj.heuristic(grid[tx][ty]);
-                    currentAdj.setgCost(current.getgCost() + 1);
-                    open.add(currentAdj);
-                } else {
-                    if (currentAdj.getgCost() > (current.getgCost() + 1)) {
-                        currentAdj.setPrev(current);
-                        currentAdj.setgCost(current.getgCost() + 1);
-                    }
+            List<AStarCell> neighborNodes = getNeighbor(current);
+            for (AStarCell neighbor: neighborNodes) {
+            	if (closed.contains(neighbor)) {
+            		continue;
+            	}
+            	int tentative_gScore = current.getgCost() + 1;
+                if (!open.contains(neighbor)) {
+                    open.add(neighbor);
+                } else if (tentative_gScore >= neighbor.getgCost()) {
+                    continue;
                 }
-                currentAdj.updateCost();
+                neighbor.setPrev(current);
+            	neighbor.setgCost(tentative_gScore);
+            	neighbor.setfCost(neighbor.getgCost() + neighbor.heuristic(grid[tx][ty]));
             }
 
             if (open.isEmpty()) {
@@ -81,7 +83,7 @@ public class AStar {
 		return lowest;
 	}
 	
-	private List<AStarCell> getAdjacent(AStarCell cell) {
+	private List<AStarCell> getNeighbor(AStarCell cell) {
 		LinkedList<AStarCell> list = new LinkedList<AStarCell>();
 		int x = cell.getX();
 		int y = cell.getY();

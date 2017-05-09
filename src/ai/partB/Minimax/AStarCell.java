@@ -22,15 +22,15 @@ public class AStarCell {
 		this.piece = piece;
 	}
 	
-	public void heuristic(AStarCell cell) {
+	public int heuristic(AStarCell cell) {
 		int score = 0;
 		score += Math.abs(this.x - cell.x);
 		score += Math.abs(this.y - cell.y);
-		hCost = score;
+		return score;
 	}
 	
-	public void updateCost() {
-		fCost = hCost + gCost;
+	public void setfCost(int fCost) {
+		this.fCost = fCost;
 	}
 
 	public int getgCost() {

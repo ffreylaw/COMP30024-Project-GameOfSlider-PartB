@@ -23,7 +23,8 @@ public class MinimaxPlayer implements SliderPlayer {
 	@Override
 	public Move move() {
 		AStar aStar = new AStar(board);
-		LinkedList<AStarCell> path = (LinkedList<AStarCell>) aStar.findPath(0, 4, 4, 4);
+		LinkedList<AStarCell> path = (LinkedList<AStarCell>) aStar.findPath(0, 4, 4, 1);
+		System.out.println(path.size());
 		for (AStarCell cell: path) {
 			System.out.println("x:"+cell.getX()+" y:"+cell.getY());
 		}
