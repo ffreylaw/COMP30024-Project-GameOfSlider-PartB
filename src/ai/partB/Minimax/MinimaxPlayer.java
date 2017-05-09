@@ -1,5 +1,7 @@
 package ai.partB.Minimax;
 
+import java.util.LinkedList;
+
 import aiproj.slider.*;
 
 public class MinimaxPlayer implements SliderPlayer {
@@ -20,14 +22,21 @@ public class MinimaxPlayer implements SliderPlayer {
 
 	@Override
 	public Move move() {
-		Minimax minimax = new Minimax(board, player);
-		MinimaxMove minimaxMove = minimax.run(3);
-		if (minimaxMove == null) {
-			return null;
+		AStar aStar = new AStar(board);
+		LinkedList<AStarCell> path = (LinkedList<AStarCell>) aStar.findPath(0, 4, 4, 4);
+		for (AStarCell cell: path) {
+			System.out.println("x:"+cell.getX()+" y:"+cell.getY());
 		}
-		Move move = new Move(minimaxMove.getX(), minimaxMove.getY(), minimaxMove.getDirection());
-		this.update(move);
-		return move;
+		
+//		Minimax minimax = new Minimax(board, player);
+//		MinimaxMove minimaxMove = minimax.run(3);
+//		if (minimaxMove == null) {
+//			return null;
+//		}
+//		Move move = new Move(minimaxMove.getX(), minimaxMove.getY(), minimaxMove.getDirection());
+//		this.update(move);
+//		return move;
+		return null;
 	}
 
 }

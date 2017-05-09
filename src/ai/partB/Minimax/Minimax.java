@@ -80,48 +80,7 @@ public class Minimax {
 	}
 	
 	private int evaluate() {
-//		switch (player) {
-//		case 'H':
-//			if (board.getAllHPieces().isEmpty()) {
-//				return Integer.MAX_VALUE;
-//			}
-//			if (board.getAllVPieces().isEmpty()) {
-//				return Integer.MIN_VALUE;
-//			}
-//			break;
-//		case 'V':
-//			if (board.getAllHPieces().isEmpty()) {
-//				return Integer.MIN_VALUE;
-//			}
-//			if (board.getAllVPieces().isEmpty()) {
-//				return Integer.MAX_VALUE;
-//			}
-//			break;
-//		}
-		int hScore = 0;
-		int vScore = 0;
-		ArrayList<MinimaxMove> hMoves = getMoves('H');
-		ArrayList<MinimaxMove> vMoves = getMoves('V');
-		for (MinimaxMove move: hMoves) {
-			for (int i = move.getX(); i <= board.size(); i++) {
-				hScore -= 1;
-			}
-		}
-		for (MinimaxMove move: vMoves) {
-			for (int i = move.getX(); i <= board.size(); i++) {
-				vScore -= 1;
-			}
-		}
 		
-		int score = 0;
-		switch (player) {
-		case 'H':
-			score = hScore;
-			break;
-		case 'V':
-			score = vScore;
-			break;
-		}
 		return random.nextInt(100);
 	}
 	
