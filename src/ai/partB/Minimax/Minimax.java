@@ -39,10 +39,10 @@ public class Minimax {
 	}
 	
 	private int min(int depth) {
+		char turn = player == 'H' ? 'V' : 'H';
 		if (depth == 0) {
 			return evaluate();
 		}
-		char turn = player == 'H' ? 'V' : 'H';
 		ArrayList<MinimaxMove> moves = getMoves(turn);
 		if (moves.isEmpty()) {	// dont know why
 			return evaluate();
@@ -60,10 +60,10 @@ public class Minimax {
 	}
 	
 	private int max(int depth) {
+		char turn = player;
 		if (depth == 0) {
 			return evaluate();
 		}
-		char turn = player;
 		ArrayList<MinimaxMove> moves = getMoves(turn);
 		if (moves.isEmpty()) {	// dont know why
 			return evaluate();
@@ -84,18 +84,27 @@ public class Minimax {
 		AStar aStar = new AStar(board);
 		int hScore = 0;
 		int vScore = 0;
+		int hEdges = 0;
+		int vEdges = 0;
 		for (Piece p: board.getAllHPieces()) {
 			int min = Integer.MAX_VALUE;
 			for (int edge = 0; edge < board.size(); edge++) {
 				if (board.get(board.size()-1, edge).getState() != State.BLANK) {
 					continue;
 				}
+				if ((p.getX() == board.size()-1) && (p.getY() == edge)) {
+					min = 0;
+					break;
+				}
 				LinkedList<AStarCell> path = (LinkedList<AStarCell>) aStar.findPath(p.getX(), p.getY(), board.size()-1, edge);
 				if (path.size() < min) {
 					min = path.size();
 				}
 			}
-			hScore += min;
+			hScore += board.size() - min;
+			if (p.getX() == board.size()-1) {
+				hEdges += 1;
+			}
 		}
 		for (Piece p: board.getAllVPieces()) {
 			int min = Integer.MAX_VALUE;
@@ -103,21 +112,28 @@ public class Minimax {
 				if (board.get(edge, board.size()-1).getState() != State.BLANK) {
 					continue;
 				}
+				if ((p.getX() == edge) && (p.getY() == board.size()-1)) {
+					min = 0;
+					break;
+				}
 				LinkedList<AStarCell> path = (LinkedList<AStarCell>) aStar.findPath(p.getX(), p.getY(), edge, board.size()-1);
 				if (path.size() < min) {
 					min = path.size();
 				}
 			}
-			vScore += min;
+			vScore += board.size() - min;
+			if (p.getY() == board.size()-1) {
+				vEdges += 1;
+			}
 		}
 		
 		int score = 0;
 		switch (player) {
 		case 'H':
-			score = (vScore - hScore) + (board.size() - 1 - board.getAllHPieces().size())*board.size();
+			score = hScore + hEdges*4 + (board.size()-1-board.getAllHPieces().size())*board.size()*16;
 			break;
 		case 'V':
-			score = (hScore - vScore) + (board.size() - 1 - board.getAllVPieces().size())*board.size();
+			score = vScore + vEdges*4 + (board.size()-1-board.getAllVPieces().size())*board.size()*16;
 			break;
 		}
 		return score;
