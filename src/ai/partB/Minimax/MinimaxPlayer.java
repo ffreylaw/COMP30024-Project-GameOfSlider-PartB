@@ -23,12 +23,6 @@ public class MinimaxPlayer implements SliderPlayer {
 
 	@Override
 	public Move move() {
-//		AStar aStar = new AStar(board);
-//		LinkedList<AStarCell> path = (LinkedList<AStarCell>) aStar.findPath(0, 4, 4, 1);
-//		System.out.println(path.size());
-//		for (AStarCell cell: path) {
-//			System.out.println("x:"+cell.getX()+" y:"+cell.getY());
-//		}
 		switch (player) {
 		case 'H':
 			if ((board.getAllHPieces().size() == 1) && (board.getAllHPieces().get(0).getX() == board.size()-1)) {
@@ -37,12 +31,12 @@ public class MinimaxPlayer implements SliderPlayer {
 			break;
 		case 'V':
 			if ((board.getAllVPieces().size() == 1) && (board.getAllVPieces().get(0).getY() == board.size()-1)) {
-				return new Move(board.getAllVPieces().get(0).getX(), board.getAllHPieces().get(0).getY(), Direction.UP);
+				return new Move(board.getAllVPieces().get(0).getX(), board.getAllVPieces().get(0).getY(), Direction.UP);
 			}
 			break;
 		}
 		Minimax minimax = new Minimax(board, player);
-		MinimaxMove minimaxMove = minimax.run(3);
+		MinimaxMove minimaxMove = minimax.run(5);
 		if (minimaxMove == null) {
 			return null;
 		}
