@@ -129,10 +129,10 @@ public class Minimax {
 		int score = 0;
 		switch (player) {
 		case 'H':
-			score = (hScore - vScore) + (hEdges - vEdges)*4 + (board.size()-1-board.getAllHPieces().size())*16;
+			score = (hScore - vScore) + (hEdges - vEdges)*4 + (board.getAllVPieces().size()-board.getAllHPieces().size())*16;
 			break;
 		case 'V':
-			score = (vScore - hScore) + (vEdges - hEdges)*4 + (board.size()-1-board.getAllVPieces().size())*16;
+			score = (vScore - hScore) + (vEdges - hEdges)*4 + (board.getAllHPieces().size()-board.getAllVPieces().size())*16;
 			break;
 		}
 		return score;
