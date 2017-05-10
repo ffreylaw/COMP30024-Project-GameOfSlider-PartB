@@ -3,6 +3,7 @@ package ai.partB.Minimax;
 import java.util.LinkedList;
 
 import aiproj.slider.*;
+import aiproj.slider.Move.Direction;
 
 public class MinimaxPlayer implements SliderPlayer {
 	
@@ -22,22 +23,32 @@ public class MinimaxPlayer implements SliderPlayer {
 
 	@Override
 	public Move move() {
-		AStar aStar = new AStar(board);
-		LinkedList<AStarCell> path = (LinkedList<AStarCell>) aStar.findPath(0, 4, 4, 1);
-		System.out.println(path.size());
-		for (AStarCell cell: path) {
-			System.out.println("x:"+cell.getX()+" y:"+cell.getY());
-		}
-		
-//		Minimax minimax = new Minimax(board, player);
-//		MinimaxMove minimaxMove = minimax.run(3);
-//		if (minimaxMove == null) {
-//			return null;
+//		AStar aStar = new AStar(board);
+//		LinkedList<AStarCell> path = (LinkedList<AStarCell>) aStar.findPath(0, 4, 4, 1);
+//		System.out.println(path.size());
+//		for (AStarCell cell: path) {
+//			System.out.println("x:"+cell.getX()+" y:"+cell.getY());
 //		}
-//		Move move = new Move(minimaxMove.getX(), minimaxMove.getY(), minimaxMove.getDirection());
-//		this.update(move);
-//		return move;
-		return null;
+		switch (player) {
+		case 'H':
+			if ((board.getAllHPieces().size() == 1) && (board.getAllHPieces().get(0).getX() == board.size()-1)) {
+				return new Move(board.getAllHPieces().get(0).getX(), board.getAllHPieces().get(0).getY(), Direction.RIGHT);
+			}
+			break;
+		case 'V':
+			if ((board.getAllVPieces().size() == 1) && (board.getAllVPieces().get(0).getY() == board.size()-1)) {
+				return new Move(board.getAllVPieces().get(0).getX(), board.getAllHPieces().get(0).getY(), Direction.UP);
+			}
+			break;
+		}
+		Minimax minimax = new Minimax(board, player);
+		MinimaxMove minimaxMove = minimax.run(3);
+		if (minimaxMove == null) {
+			return null;
+		}
+		Move move = new Move(minimaxMove.getX(), minimaxMove.getY(), minimaxMove.getDirection());
+		this.update(move);
+		return move;
 	}
 
 }

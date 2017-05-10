@@ -1,6 +1,7 @@
 package ai.partB.Minimax;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 
 import aiproj.slider.Move.Direction;
@@ -80,8 +81,46 @@ public class Minimax {
 	}
 	
 	private int evaluate() {
+		AStar aStar = new AStar(board);
+		int hScore = 0;
+		int vScore = 0;
+		for (Piece p: board.getAllHPieces()) {
+			int min = Integer.MAX_VALUE;
+			for (int edge = 0; edge < board.size(); edge++) {
+				if (board.get(board.size()-1, edge).getState() != State.BLANK) {
+					continue;
+				}
+				LinkedList<AStarCell> path = (LinkedList<AStarCell>) aStar.findPath(p.getX(), p.getY(), board.size()-1, edge);
+				if (path.size() < min) {
+					min = path.size();
+				}
+			}
+			hScore += min;
+		}
+		for (Piece p: board.getAllVPieces()) {
+			int min = Integer.MAX_VALUE;
+			for (int edge = 0; edge < board.size(); edge++) {
+				if (board.get(edge, board.size()-1).getState() != State.BLANK) {
+					continue;
+				}
+				LinkedList<AStarCell> path = (LinkedList<AStarCell>) aStar.findPath(p.getX(), p.getY(), edge, board.size()-1);
+				if (path.size() < min) {
+					min = path.size();
+				}
+			}
+			vScore += min;
+		}
 		
-		return random.nextInt(100);
+		int score = 0;
+		switch (player) {
+		case 'H':
+			score = (vScore - hScore) + (board.size() - 1 - board.getAllHPieces().size())*board.size();
+			break;
+		case 'V':
+			score = (hScore - vScore) + (board.size() - 1 - board.getAllVPieces().size())*board.size();
+			break;
+		}
+		return score;
 	}
 	
 	private ArrayList<MinimaxMove> getMoves(char turn) {
