@@ -56,6 +56,7 @@ public class MinimaxMove {
 			default:
 				break;
 			}
+			board.calculateLegalMoves();
 			p = null;
 			return;
 		}

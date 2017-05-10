@@ -92,7 +92,7 @@ public class Board {
 		return allVPieces;
 	}
 
-	private void calculateLegalMoves() {
+	public void calculateLegalMoves() {
 		numLegalHMoves = 0;
 		numLegalVMoves = 0;
 
