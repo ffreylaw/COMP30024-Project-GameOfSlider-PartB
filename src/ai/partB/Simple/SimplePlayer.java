@@ -23,11 +23,11 @@ public class SimplePlayer implements SliderPlayer {
 	@Override
 	public void update(Move move) {
 		board.update(player, move);
+		board.calculateLegalMoves();
 	}
 
 	@Override
 	public Move move() {
-		board.calculateLegalMoves();
 		// random select a piece
 		Piece piece = null;
 		int i = 0;
@@ -267,7 +267,6 @@ public class SimplePlayer implements SliderPlayer {
 			grid[toi][toj] = piece;
 			grid[toi][toj].set(toi, toj, piece.state);
 			
-			calculateLegalMoves();
 			return;
 		}
 

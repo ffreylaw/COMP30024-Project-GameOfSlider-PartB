@@ -32,6 +32,7 @@ public class MinimaxMove {
 	public void perform(Board board, char turn) {
 		Move move = new Move(x, y, d);
 		p = board.update(turn, move);
+		board.calculateLegalMoves();
 	}
 	
 	public void undo(Board board, char turn) {
@@ -62,6 +63,7 @@ public class MinimaxMove {
 		}
 		Move move = new Move(i, j, back);
 		board.update(turn, move);
+		board.calculateLegalMoves();
 	}
 	
 }

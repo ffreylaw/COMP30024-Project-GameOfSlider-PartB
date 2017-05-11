@@ -118,11 +118,13 @@ public class Minimax {
 					continue;
 				}
 				LinkedList<AStarCell> path = (LinkedList<AStarCell>) aStar.findPath(p.getX(), p.getY(), board.size()-1, edge);
-				if (path.size() < min) {
+				if (!path.isEmpty() && path.size() < min) {
 					min = path.size();
 				}
 			}
-			hScore += board.size() - min;
+			if (min != Integer.MAX_VALUE) {
+				hScore += board.size() - min;
+			}
 			if (p.getX() == board.size()-1) {
 				hEdges += 1;
 			}
@@ -138,11 +140,13 @@ public class Minimax {
 					continue;
 				}
 				LinkedList<AStarCell> path = (LinkedList<AStarCell>) aStar.findPath(p.getX(), p.getY(), edge, board.size()-1);
-				if (path.size() < min) {
+				if (!path.isEmpty() && path.size() < min) {
 					min = path.size();
 				}
 			}
-			vScore += board.size() - min;
+			if (min != Integer.MAX_VALUE) {
+				vScore += board.size() - min;
+			}
 			if (p.getY() == board.size()-1) {
 				vEdges += 1;
 			}
@@ -150,10 +154,10 @@ public class Minimax {
 		int score = 0;
 		switch (player) {
 		case 'H':
-			score = (hScore - vScore) + (hEdges - vEdges)*4 + (board.getAllVPieces().size()-board.getAllHPieces().size())*16;
+			score = (hScore - vScore) + (hEdges - vEdges)*board.size() + (board.getAllVPieces().size()-board.getAllHPieces().size())*board.size()*board.size();
 			break;
 		case 'V':
-			score = (vScore - hScore) + (vEdges - hEdges)*4 + (board.getAllHPieces().size()-board.getAllVPieces().size())*16;
+			score = (vScore - hScore) + (vEdges - hEdges)*board.size() + (board.getAllHPieces().size()-board.getAllVPieces().size())*board.size()*board.size();
 			break;
 		}
 		return score;

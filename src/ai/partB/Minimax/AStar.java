@@ -24,7 +24,6 @@ public class AStar {
         		case BLOCK:		grid[i][j] = new AStarCell(i, j, 'B'); break;
         		case BLANK:		grid[i][j] = new AStarCell(i, j, '+'); break;
         		}
-        		
         	}
         }
         open = new LinkedList<AStarCell>();
@@ -32,6 +31,9 @@ public class AStar {
 	}
 	
 	public final List<AStarCell> findPath(int sx, int sy, int tx, int ty) {
+		open.clear();
+		closed.clear();
+        
         open.add(grid[sx][sy]);
         player = grid[sx][sy].getPiece();
 

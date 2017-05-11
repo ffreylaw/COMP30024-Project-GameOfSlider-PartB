@@ -195,7 +195,6 @@ public class Board {
 		grid[toi][toj] = piece;
 		grid[toi][toj].reset(toi, toj, piece.getState());
 		
-		calculateLegalMoves();
 		return null;
 	}
 
