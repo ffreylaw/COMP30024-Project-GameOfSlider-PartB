@@ -27,6 +27,7 @@ public class SimplePlayer implements SliderPlayer {
 
 	@Override
 	public Move move() {
+		board.calculateLegalMoves();
 		// random select a piece
 		Piece piece = null;
 		int i = 0;

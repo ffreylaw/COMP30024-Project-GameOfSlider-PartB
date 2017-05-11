@@ -1,7 +1,5 @@
 package ai.partB.Minimax;
 
-import java.util.LinkedList;
-
 import aiproj.slider.*;
 import aiproj.slider.Move.Direction;
 
@@ -23,6 +21,7 @@ public class MinimaxPlayer implements SliderPlayer {
 
 	@Override
 	public Move move() {
+		board.calculateLegalMoves();
 		switch (player) {
 		case 'H':
 			if ((board.getAllHPieces().size() == 1) && (board.getAllHPieces().get(0).getX() == board.size()-1)) {
@@ -36,7 +35,7 @@ public class MinimaxPlayer implements SliderPlayer {
 			break;
 		}
 		Minimax minimax = new Minimax(board, player);
-		MinimaxMove minimaxMove = minimax.run(3);
+		MinimaxMove minimaxMove = minimax.run(4);
 		if (minimaxMove == null) {
 			return null;
 		}

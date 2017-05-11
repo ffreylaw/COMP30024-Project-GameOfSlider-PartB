@@ -42,8 +42,6 @@ public class AStar {
             closed.add(current);
             open.remove(current);
             
-            //System.out.println("curr: x:"+current.getX()+" y:"+current.getY()+" piece:"+current.getPiece());
-
             if ((current.getX() == tx) && (current.getY() == ty)) {
                 return calculatePath(grid[sx][sy], current);
             }
