@@ -19,13 +19,17 @@ public class MinimaxPlayer implements SliderPlayer {
 
 	@Override
 	public void update(Move move) {
+		// update the board and re-calculate legal moves
 		board.update(player, move);
 		board.calculateLegalMoves();
 	}
 
 	@Override
 	public Move move() {
+		// count the moves
 		moveCount++;
+		
+		// check if winning state and make the winning move
 		switch (player) {
 		case 'H':
 			if ((board.getAllHPieces().size() == 1) && (board.getAllHPieces().get(0).getX() == board.size()-1)) {
@@ -38,6 +42,8 @@ public class MinimaxPlayer implements SliderPlayer {
 			}
 			break;
 		}
+		
+		// get and apply my strategy
 		Strategy s = new Strategy(board, player);
 		Move esMove = s.doEarlierStrategy();
 		if ((moveCount <= board.size()) && esMove != null) {
@@ -45,6 +51,7 @@ public class MinimaxPlayer implements SliderPlayer {
 			return esMove;
 		}
 		
+		// if no strategy applied, apply minimax
 		Minimax minimax = new Minimax(board, player);
 		MinimaxMove minimaxMove = minimax.run(4);
 		if (minimaxMove == null) {

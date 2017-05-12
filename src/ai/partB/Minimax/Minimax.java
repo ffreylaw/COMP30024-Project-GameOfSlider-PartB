@@ -15,34 +15,45 @@ public class Minimax {
 	}
 	
 	public MinimaxMove run(int depth) {
-		char turn = player;
-		ArrayList<MinimaxMove> moves = getMoves(turn);
+		// get all legal moves of me
+		ArrayList<MinimaxMove> moves = getMoves(player);
 		if (moves.isEmpty()) {
+			// no legal moves
 			return null;
 		}
+		
+		// get the first move and start iterate each moves and start recursion
 		MinimaxMove bestMove = moves.get(0);
 		int bestScore = Integer.MIN_VALUE;
 		for (MinimaxMove move: moves) {
-			move.perform(board, turn);
+			move.perform(board, player);
 			int score = min(depth-1);
 			if (score > bestScore) {
 				bestMove = move;
 				bestScore = score;
 			}
-			move.undo(board, turn);
+			move.undo(board, player);
 		}
 		return bestMove;
 	}
 	
 	private int min(int depth) {
+		// enemy's turn
 		char turn = player == 'H' ? 'V' : 'H';
+		
 		if (depth == 0) {
+			// reached bottom
 			return evaluate();
 		}
+		
+		// get all legal moves of enemy
 		ArrayList<MinimaxMove> moves = getMoves(turn);
 		if (moves.isEmpty()) {
+			// no legal moves
 			return evaluate();
 		}
+		
+		// start recursion expanding nodes
 		int bestScore = Integer.MAX_VALUE;
 		for (MinimaxMove move: moves) {
 			move.perform(board, turn);
@@ -56,14 +67,22 @@ public class Minimax {
 	}
 	
 	private int max(int depth) {
+		// my turn
 		char turn = player;
+		
 		if (depth == 0) {
+			// reached bottom
 			return evaluate();
 		}
+		
+		// get all legal moves of me
 		ArrayList<MinimaxMove> moves = getMoves(turn);
 		if (moves.isEmpty()) {
+			// no legal moves
 			return evaluate();
 		}
+		
+		// start recursion expanding nodes
 		int bestScore = Integer.MIN_VALUE;
 		for (MinimaxMove move: moves) {
 			move.perform(board, turn);
@@ -80,31 +99,40 @@ public class Minimax {
 		switch (player) {
 		case 'H':
 			if ((board.getAllHPieces().size() == 0)) {
+				// H win
 				return Integer.MAX_VALUE-1;
 			} else if ((board.getAllHPieces().size() == 1) && (board.getAllHPieces().get(0).getX() == board.size()-1)) {
+				// one move to H win
 				return Integer.MAX_VALUE-2;
 			} else if ((board.getAllVPieces().size() == 0)) {
+				// V win
 				return Integer.MIN_VALUE+1;
 			} else if ((board.getAllVPieces().size() == 1) && (board.getAllVPieces().get(0).getY() == board.size()-1)) {
+				// one move to V win
 				return Integer.MIN_VALUE+2;
 			}
 			break;
 		case 'V':
 			if ((board.getAllHPieces().size() == 0)) {
+				// H win
 				return Integer.MIN_VALUE+1;
 			} else if ((board.getAllHPieces().size() == 1) && (board.getAllHPieces().get(0).getX() == board.size()-1)) {
+				// one move to H win
 				return Integer.MIN_VALUE+2;
 			} else if ((board.getAllVPieces().size() == 0)) {
+				// V win
 				return Integer.MAX_VALUE-1;
 			} else if ((board.getAllVPieces().size() == 1) && (board.getAllVPieces().get(0).getY() == board.size()-1)) {
+				// one move to V win
 				return Integer.MAX_VALUE-2;
 			}
 			break;
 		}
-		int hScore = 0;
-		int vScore = 0;
-		int hEdges = 0;
-		int vEdges = 0;
+		int hScore = 0;		// total number of moves away from leading edge of all H pieces
+		int vScore = 0;		// total number of moves away from bottom edge of all V pieces
+		int hEdges = 0;		// total number of H pieces at trailing edge
+		int vEdges = 0;		// total number of V pieces at top edge
+		// calculate score for H
 		for (Piece p: board.getAllHPieces()) {
 			int pathSize = p.getX();
 			if (p.getX() + 1 < board.size()) {
@@ -119,6 +147,7 @@ public class Minimax {
 				hEdges += 1;
 			}
 		}
+		// calculate score for V
 		for (Piece p: board.getAllVPieces()) {
 			int pathSize = p.getY();
 			if (p.getY() + 1 < board.size()) {
@@ -133,6 +162,7 @@ public class Minimax {
 				vEdges += 1;
 			}
 		}
+		// score formula: (myScore - enemyScore) + (myNumEgdes - enemyNumEdges)*boardSize + (myNumOffEdge - enemyNumOffEdge)*boardSize**2
 		int score = 0;
 		switch (player) {
 		case 'H':
@@ -146,6 +176,7 @@ public class Minimax {
 	}
 	
 	private ArrayList<MinimaxMove> getMoves(char turn) {
+		// get all legal moves of current turn
 		ArrayList<MinimaxMove> moves = new ArrayList<MinimaxMove>();
 		switch (turn) {
 		case 'H':

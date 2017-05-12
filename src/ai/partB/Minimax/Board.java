@@ -22,12 +22,13 @@ public class Board {
 	public Board(int dimension, String board) {
 		reader = new Scanner(board);
 		
+		// initialize everything
 		size = dimension;
 		this.grid = new Piece[size][size];
-		
 		allHPieces = new ArrayList<Piece>();
 		allVPieces = new ArrayList<Piece>();
 		
+		// setup board
 		int j = size - 1;
 		while (j >= 0 && reader.hasNextLine()) {
 			String line = reader.nextLine();
@@ -37,7 +38,8 @@ public class Board {
 			}
 			j--;
 		}
-
+		
+		// calculate legal moves
 		numLegalHMoves = 0;
 		numLegalVMoves = 0;
 		calculateLegalMoves();
@@ -182,7 +184,6 @@ public class Board {
 			grid[move.i][move.j] = new Piece(move.i, move.j, State.BLANK);
 			allHPieces.remove(piece);
 			return piece;
-
 		} else if (piece.getState() == State.VSLIDER && toj == this.size){
 			grid[move.i][move.j] = new Piece(move.i, move.j, State.BLANK);
 			allVPieces.remove(piece);
