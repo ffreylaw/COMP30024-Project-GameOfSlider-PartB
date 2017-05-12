@@ -45,7 +45,8 @@ public class Strategy {
 				} else if (minHPath == minVPath) {
 					return new Move(minHPiece.getX(), minHPiece.getY(), Direction.RIGHT);
 				}
-			} else if ((!isBottomLeftOccupied()) && (board.get(1, 0).getState() == State.VSLIDER)) {
+			}
+			if ((!isBottomLeftOccupied()) && (board.get(1, 0).getState() == State.VSLIDER)) {
 				return new Move(0, 1, Direction.RIGHT);
 			}
 			break;
@@ -72,11 +73,11 @@ public class Strategy {
 						return new Move(1, 0, Direction.UP);
 					}
 					return new Move(minVPiece.getX(), minVPiece.getY(), Direction.UP);
-				} else if (minHPath == minVPath) {
+				} else if (minVPath == minHPath) {
 					return new Move(minVPiece.getX(), minVPiece.getY(), Direction.UP);
 				}
 			}
-			else if ((!isBottomLeftOccupied()) && (board.get(0, 1).getState() == State.HSLIDER)) {
+			if ((!isBottomLeftOccupied()) && (board.get(0, 1).getState() == State.HSLIDER)) {
 				return new Move(1, 0, Direction.UP);
 			}
 			break;

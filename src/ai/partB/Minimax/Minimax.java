@@ -1,7 +1,6 @@
 package ai.partB.Minimax;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import aiproj.slider.Move.Direction;
 
@@ -81,72 +80,55 @@ public class Minimax {
 		switch (player) {
 		case 'H':
 			if ((board.getAllHPieces().size() == 0)) {
-				return Integer.MAX_VALUE;
-			} else if ((board.getAllHPieces().size() == 1) && (board.getAllHPieces().get(0).getX() == board.size()-1)) {
 				return Integer.MAX_VALUE-1;
+			} else if ((board.getAllHPieces().size() == 1) && (board.getAllHPieces().get(0).getX() == board.size()-1)) {
+				return Integer.MAX_VALUE-2;
 			} else if ((board.getAllVPieces().size() == 0)) {
-				return Integer.MIN_VALUE;
-			} else if ((board.getAllVPieces().size() == 1) && (board.getAllVPieces().get(0).getY() == board.size()-1)) {
 				return Integer.MIN_VALUE+1;
+			} else if ((board.getAllVPieces().size() == 1) && (board.getAllVPieces().get(0).getY() == board.size()-1)) {
+				return Integer.MIN_VALUE+2;
 			}
 			break;
 		case 'V':
 			if ((board.getAllHPieces().size() == 0)) {
-				return Integer.MIN_VALUE;
-			} else if ((board.getAllHPieces().size() == 1) && (board.getAllHPieces().get(0).getX() == board.size()-1)) {
 				return Integer.MIN_VALUE+1;
+			} else if ((board.getAllHPieces().size() == 1) && (board.getAllHPieces().get(0).getX() == board.size()-1)) {
+				return Integer.MIN_VALUE+2;
 			} else if ((board.getAllVPieces().size() == 0)) {
-				return Integer.MAX_VALUE;
-			} else if ((board.getAllVPieces().size() == 1) && (board.getAllVPieces().get(0).getY() == board.size()-1)) {
 				return Integer.MAX_VALUE-1;
+			} else if ((board.getAllVPieces().size() == 1) && (board.getAllVPieces().get(0).getY() == board.size()-1)) {
+				return Integer.MAX_VALUE-2;
 			}
 			break;
 		}
-		AStar aStar = new AStar(board);
 		int hScore = 0;
 		int vScore = 0;
 		int hEdges = 0;
 		int vEdges = 0;
 		for (Piece p: board.getAllHPieces()) {
-			int min = Integer.MAX_VALUE;
-			for (int edge = 0; edge < board.size(); edge++) {
-				if ((p.getX() == board.size()-1) && (p.getY() == edge)) {
-					min = 0;
-					break;
-				}
-				if (board.get(board.size()-1, edge).getState() != State.BLANK) {
-					continue;
-				}
-				LinkedList<AStarCell> path = (LinkedList<AStarCell>) aStar.findPath(p.getX(), p.getY(), board.size()-1, edge);
-				if (!path.isEmpty() && path.size() < min) {
-					min = path.size();
+			int pathSize = p.getX();
+			if (p.getX() + 1 < board.size()) {
+				for (int x = p.getX() + 1; x < board.size(); x++) {
+					if (board.get(x, p.getY()).getState() != State.BLANK) {
+						pathSize--;
+					}
 				}
 			}
-			if (min != Integer.MAX_VALUE) {
-				hScore += board.size() - min;
-			}
+			hScore += pathSize;
 			if (p.getX() == board.size()-1) {
 				hEdges += 1;
 			}
 		}
 		for (Piece p: board.getAllVPieces()) {
-			int min = Integer.MAX_VALUE;
-			for (int edge = 0; edge < board.size(); edge++) {
-				if ((p.getX() == edge) && (p.getY() == board.size()-1)) {
-					min = 0;
-					break;
-				}
-				if (board.get(edge, board.size()-1).getState() != State.BLANK) {
-					continue;
-				}
-				LinkedList<AStarCell> path = (LinkedList<AStarCell>) aStar.findPath(p.getX(), p.getY(), edge, board.size()-1);
-				if (!path.isEmpty() && path.size() < min) {
-					min = path.size();
+			int pathSize = p.getY();
+			if (p.getY() + 1 < board.size()) {
+				for (int y = p.getY() + 1; y < board.size(); y++) {
+					if (board.get(p.getX(), y).getState() != State.BLANK) {
+						pathSize--;
+					}
 				}
 			}
-			if (min != Integer.MAX_VALUE) {
-				vScore += board.size() - min;
-			}
+			vScore += pathSize;
 			if (p.getY() == board.size()-1) {
 				vEdges += 1;
 			}

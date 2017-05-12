@@ -46,7 +46,7 @@ public class MinimaxPlayer implements SliderPlayer {
 		}
 		
 		Minimax minimax = new Minimax(board, player);
-		MinimaxMove minimaxMove = minimax.run(3);
+		MinimaxMove minimaxMove = minimax.run(4);
 		if (minimaxMove == null) {
 			return null;
 		}
