@@ -203,19 +203,34 @@ public class Board {
 	public String toString() {
 		String str = new String();
 		for (int j = size - 1; j >= 0; j--) {
-			for (int i = 0; i < size; i++) {
+			switch (grid[0][j].getState()) {
+			case HSLIDER:
+				str += 'H';
+				break;
+			case VSLIDER:
+				str += 'V';
+				break;
+			case BLOCK:
+				str += 'B';
+				break;
+			case BLANK:
+				str += '+';
+				break;
+			}
+			for (int i = 1; i < size; i++) {
+				str += ' ';
 				switch (grid[i][j].getState()) {
 				case HSLIDER:
-					str += "H ";
+					str += 'H';
 					break;
 				case VSLIDER:
-					str += "V ";
+					str += 'V';
 					break;
 				case BLOCK:
-					str += "B ";
+					str += 'B';
 					break;
 				case BLANK:
-					str += "+ ";
+					str += '+';
 					break;
 				}
 			}
