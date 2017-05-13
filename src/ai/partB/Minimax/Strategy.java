@@ -1,6 +1,5 @@
 package ai.partB.Minimax;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import aiproj.slider.Move;
@@ -54,7 +53,7 @@ public class Strategy {
 			if (!isTopRightOccupied()) {
 				Piece minVPiece = null;
 				int minVPath = Integer.MAX_VALUE;
-				for (Piece p: board.getAllHPieces()) {
+				for (Piece p: board.getAllVPieces()) {
 					LinkedList<AStarCell> path = (LinkedList<AStarCell>) aStar.findPath(p.getX(), p.getY(), board.size()-1, board.size()-1);
 					if (!path.isEmpty() && path.size() < minVPath) {
 						minVPiece = p;
@@ -62,7 +61,7 @@ public class Strategy {
 					}
 				}
 				int minHPath = Integer.MAX_VALUE;
-				for (Piece p: board.getAllVPieces()) {
+				for (Piece p: board.getAllHPieces()) {
 					LinkedList<AStarCell> path = (LinkedList<AStarCell>) aStar.findPath(p.getX(), p.getY(), board.size()-1, board.size()-1);
 					if (!path.isEmpty() && path.size() < minHPath) {
 						minHPath = path.size();
@@ -97,56 +96,6 @@ public class Strategy {
 			return false;
 		}
 		return true;
-	}
-	
-	private ArrayList<Piece> getAttack() {
-		ArrayList<Piece> pieces = new ArrayList<Piece>();
-		switch (player) {
-		case 'H':
-			for (Piece p: board.getAllHPieces()) {
-				int x = p.getX();
-				int y = p.getY();
-				if (((x + 1 < board.size()) && (y - 1 >= 0)) && (board.get(x+1, y-1).getState() == State.VSLIDER)) {
-					pieces.add(p);
-				}
-			}
-			break;
-		case 'V':
-			for (Piece p: board.getAllVPieces()) {
-				int x = p.getX();
-				int y = p.getY();
-				if (((x - 1 >= 0) && (y + 1 < board.size())) && (board.get(x-1, y+1).getState() == State.HSLIDER)) {
-					pieces.add(p);
-				}
-			}
-			break;
-		}
-		return pieces;
-	}
-	
-	private ArrayList<Piece> getDefence() {
-		ArrayList<Piece> pieces = new ArrayList<Piece>();
-		switch (player) {
-		case 'H':
-			for (Piece p: board.getAllHPieces()) {
-				int x = p.getX();
-				int y = p.getY();
-				if ((y - 1 >= 0) && (board.get(x, y-1).getState() == State.VSLIDER)) {
-					pieces.add(p);
-				}
-			}
-			break;
-		case 'V':
-			for (Piece p: board.getAllVPieces()) {
-				int x = p.getX();
-				int y = p.getY();
-				if ((x - 1 >= 0) && (board.get(x-1, y).getState() == State.HSLIDER)) {
-					pieces.add(p);
-				}
-			}
-			break;
-		}
-		return pieces;
 	}
 
 }
