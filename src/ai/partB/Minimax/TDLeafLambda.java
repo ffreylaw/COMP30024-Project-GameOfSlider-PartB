@@ -39,10 +39,6 @@ public class TDLeafLambda {
 		return singleton;
 	}
 	
-	public ArrayList<Double> getWeight() {
-		return weights;
-	}
-	
 	public double getWeight(int index) {
 		return weights.get(index);
 	}
@@ -60,12 +56,15 @@ public class TDLeafLambda {
 	}
 	
 	public void finalize() {
+		// get size
 		int n = evals_c1.size();
 		
 		ArrayList<Double> evals = new ArrayList<Double>();
 		ArrayList<Double> rewards = new ArrayList<Double>();
 		for (int i = 0; i < n; i++) {
+			// calculate eval(s_i^l,w) and store in an array
 			evals.add(evals_c1.get(i)*weights.get(0) + evals_c2.get(i)*weights.get(1) + evals_c3.get(i)*weights.get(2));
+			// calculate r(s_i^l,w) and store in an array
 			rewards.add(Math.tanh(evals.get(i)));
 		}
 		
@@ -74,6 +73,7 @@ public class TDLeafLambda {
 		
 		double td = 0.0;
 		for (int m = 0; m < n-1; m++) {
+			// td = sum lambda * temporal difference
 			td += lambda * (rewards.get(m+1) - rewards.get(m));
 		}
 		
@@ -81,6 +81,7 @@ public class TDLeafLambda {
 		double tmp_2 = 0.0;
 		double tmp_3 = 0.0;
 		for (int i = 0; i < n-1; i++) {
+			// sum dr(s_i^l,w)/dw_j * td
 			double coe_1 = Math.pow(1.0/(Math.cosh(evals.get(i))), 2) * evals_c1.get(i);
 			double coe_2 = Math.pow(1.0/(Math.cosh(evals.get(i))), 2) * evals_c2.get(i);
 			double coe_3 = Math.pow(1.0/(Math.cosh(evals.get(i))), 2) * evals_c3.get(i);
@@ -89,6 +90,7 @@ public class TDLeafLambda {
 			tmp_3 += coe_3 * td;
 		}
 		
+		// update weights
 		double new_w1 = weights.get(0) + alpha*tmp_1;
 		double new_w2 = weights.get(1) + alpha*tmp_2;
 		double new_w3 = weights.get(2) + alpha*tmp_3;

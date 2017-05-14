@@ -68,6 +68,7 @@ public class Minimax {
 				bestScore = score;
 			}
 			move.undo(board, turn);
+			// alpha-beta pruning
 			if (score.score < beta) {
 				beta = score.score;
 			}
@@ -104,6 +105,7 @@ public class Minimax {
 				bestScore = score;
 			}
 			move.undo(board, turn);
+			// alpha-beta pruning
 			if (score.score > alpha) {
 				alpha = score.score;
 			}
@@ -152,9 +154,9 @@ public class Minimax {
 		}
 		
 		TDLeafLambda tdll = TDLeafLambda.getInstance();
-		double eval_c1 = 0.0;
-		double eval_c2 = 0.0;
-		double eval_c3 = 0.0;
+		double eval_c1 = 0.0;	// feature 1: how close to edge
+		double eval_c2 = 0.0;	// feature 2: num pieces at edge
+		double eval_c3 = 0.0;	// feature 3: num pieces off edge
 		int score = 0;
 		switch (player) {
 		case 'H':
@@ -195,6 +197,8 @@ public class Minimax {
 		return moves;
 	}
 	
+	/** class for storing a score and associate features
+	 */
 	private static class Score {
 		
 		private int score;
