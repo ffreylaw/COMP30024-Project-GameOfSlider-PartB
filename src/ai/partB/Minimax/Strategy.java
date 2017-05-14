@@ -38,7 +38,9 @@ public class Strategy {
 				}
 				if (minHPath < minVPath) {
 					if ((!isBottomLeftOccupied()) && (board.get(1, 0).getState() == State.VSLIDER)) {
-						return new Move(0, 1, Direction.RIGHT);
+						if (board.get(0, 1).getState() == State.HSLIDER) {
+							return new Move(0, 1, Direction.RIGHT);
+						}
 					}
 					return new Move(minHPiece.getX(), minHPiece.getY(), Direction.RIGHT);
 				} else if (minHPath == minVPath) {
@@ -46,7 +48,9 @@ public class Strategy {
 				}
 			}
 			if ((!isBottomLeftOccupied()) && (board.get(1, 0).getState() == State.VSLIDER)) {
-				return new Move(0, 1, Direction.RIGHT);
+				if (board.get(0, 1).getState() == State.HSLIDER) {
+					return new Move(0, 1, Direction.RIGHT);
+				}
 			}
 			break;
 		case 'V':
@@ -69,7 +73,9 @@ public class Strategy {
 				}
 				if (minVPath < minHPath) {
 					if ((!isBottomLeftOccupied()) && (board.get(0, 1).getState() == State.HSLIDER)) {
-						return new Move(1, 0, Direction.UP);
+						if (board.get(1, 0).getState() == State.VSLIDER) {
+							return new Move(1, 0, Direction.UP);
+						}
 					}
 					return new Move(minVPiece.getX(), minVPiece.getY(), Direction.UP);
 				} else if (minVPath == minHPath) {
@@ -77,7 +83,9 @@ public class Strategy {
 				}
 			}
 			if ((!isBottomLeftOccupied()) && (board.get(0, 1).getState() == State.HSLIDER)) {
-				return new Move(1, 0, Direction.UP);
+				if (board.get(1, 0).getState() == State.VSLIDER) {
+					return new Move(1, 0, Direction.UP);
+				}
 			}
 			break;
 		} 

@@ -135,12 +135,8 @@ public class Minimax {
 		// calculate score for H
 		for (Piece p: board.getAllHPieces()) {
 			int pathSize = p.getX();
-			if (p.getX() + 1 < board.size()) {
-				for (int x = p.getX() + 1; x < board.size(); x++) {
-					if (board.get(x, p.getY()).getState() != State.BLANK) {
-						pathSize--;
-					}
-				}
+			if ((p.getX() + 1 < board.size()) && (board.get(p.getX() + 1, p.getY()).getState() != State.BLANK)) {
+				pathSize--;
 			}
 			hScore += pathSize;
 			if (p.getX() == board.size()-1) {
@@ -150,12 +146,8 @@ public class Minimax {
 		// calculate score for V
 		for (Piece p: board.getAllVPieces()) {
 			int pathSize = p.getY();
-			if (p.getY() + 1 < board.size()) {
-				for (int y = p.getY() + 1; y < board.size(); y++) {
-					if (board.get(p.getX(), y).getState() != State.BLANK) {
-						pathSize--;
-					}
-				}
+			if ((p.getY() + 1 < board.size()) && (board.get(p.getX(), p.getY() + 1).getState() != State.BLANK)) {
+				pathSize--;
 			}
 			vScore += pathSize;
 			if (p.getY() == board.size()-1) {
