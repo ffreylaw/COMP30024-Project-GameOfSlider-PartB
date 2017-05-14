@@ -29,19 +29,19 @@ public class MinimaxPlayer implements SliderPlayer {
 		// count the moves
 		moveCount++;
 		
-		//TDLeafLambda tdll = TDLeafLambda.getInstance();
+		TDLeafLambda tdll = TDLeafLambda.getInstance();
 		
 		// check if winning state and make the winning move
 		switch (player) {
 		case 'H':
 			if ((board.getAllHPieces().size() == 1) && (board.getAllHPieces().get(0).getX() == board.size()-1)) {
-				//tdll.finalize();
+				tdll.finalize();
 				return new Move(board.getAllHPieces().get(0).getX(), board.getAllHPieces().get(0).getY(), Direction.RIGHT);
 			}
 			break;
 		case 'V':
 			if ((board.getAllVPieces().size() == 1) && (board.getAllVPieces().get(0).getY() == board.size()-1)) {
-				//tdll.finalize();
+				tdll.finalize();
 				return new Move(board.getAllVPieces().get(0).getX(), board.getAllVPieces().get(0).getY(), Direction.UP);
 			}
 			break;

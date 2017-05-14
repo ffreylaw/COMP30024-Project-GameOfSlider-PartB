@@ -101,9 +101,6 @@ public class Referee {
 		 */
 
 		if(board.finished()) {
-			TDLeafLambda tdll = TDLeafLambda.getInstance();
-			tdll.finalize();
-			
 			System.out.println("winner: " + board.winner());
 			System.out.println("times:");
 			System.out.println(" horizontal ~"+ times[Player.H]/1000000 +"ms");

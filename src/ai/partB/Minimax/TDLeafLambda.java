@@ -18,6 +18,8 @@ public class TDLeafLambda {
 	
 	private Scanner reader;
 	
+	private static final String FILENAME = "learning/weight_h_6.txt";
+	
 	private TDLeafLambda() {
 		weights = new ArrayList<Double>();
 		evals_c1 = new ArrayList<Double>();
@@ -25,7 +27,7 @@ public class TDLeafLambda {
 		evals_c3 = new ArrayList<Double>();
 		
 		try {
-			reader = new Scanner(new File("learning/weight.txt"));
+			reader = new Scanner(new File(FILENAME));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -95,7 +97,7 @@ public class TDLeafLambda {
 		double new_w2 = weights.get(1) + alpha*tmp_2;
 		double new_w3 = weights.get(2) + alpha*tmp_3;
 		try {
-			FileWriter writer = new FileWriter(new File("learning/weight.txt"));
+			FileWriter writer = new FileWriter(new File(FILENAME));
 			writer.write(new_w1 + " " + new_w2 + " " + new_w3);
 			writer.flush();
 			writer.close();
