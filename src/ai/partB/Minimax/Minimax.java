@@ -24,20 +24,26 @@ public class Minimax {
 		
 		// get the first move and start iterate each moves and start recursion
 		MinimaxMove bestMove = moves.get(0);
-		int bestScore = Integer.MIN_VALUE;
+		Score bestScore = new Score(Integer.MIN_VALUE, 0.0, 0.0, 0.0);
 		for (MinimaxMove move: moves) {
 			move.perform(board, player);
-			int score = min(depth-1);
-			if (score > bestScore) {
+			Score score = min(depth-1, Integer.MIN_VALUE, Integer.MAX_VALUE);
+			if (score.score > bestScore.score) {
 				bestMove = move;
 				bestScore = score;
 			}
 			move.undo(board, player);
 		}
+		
+		TDLeafLambda tdll = TDLeafLambda.getInstance();
+		tdll.addEvalC1(bestScore.eval_c1);
+		tdll.addEvalC2(bestScore.eval_c2);
+		tdll.addEvalC3(bestScore.eval_c3);
+		
 		return bestMove;
 	}
 	
-	private int min(int depth) {
+	private Score min(int depth, int alpha, int beta) {
 		// enemy's turn
 		char turn = player == 'H' ? 'V' : 'H';
 		
@@ -54,19 +60,26 @@ public class Minimax {
 		}
 		
 		// start recursion expanding nodes
-		int bestScore = Integer.MAX_VALUE;
+		Score bestScore = new Score(Integer.MAX_VALUE, 0.0, 0.0, 0.0);
 		for (MinimaxMove move: moves) {
 			move.perform(board, turn);
-			int score = max(depth-1);
-			if (score < bestScore) {
+			Score score = max(depth-1, alpha, beta);
+			if (score.score < bestScore.score) {
 				bestScore = score;
 			}
 			move.undo(board, turn);
+			if (score.score < beta) {
+				beta = score.score;
+			}
+			if (beta <= alpha) {
+				// cut-off
+				break;
+			}
 		}
 		return bestScore;
 	}
 	
-	private int max(int depth) {
+	private Score max(int depth, int alpha, int beta) {
 		// my turn
 		char turn = player;
 		
@@ -83,51 +96,26 @@ public class Minimax {
 		}
 		
 		// start recursion expanding nodes
-		int bestScore = Integer.MIN_VALUE;
+		Score bestScore = new Score(Integer.MIN_VALUE, 0.0, 0.0, 0.0);
 		for (MinimaxMove move: moves) {
 			move.perform(board, turn);
-			int score = min(depth-1);
-			if (score > bestScore) {
+			Score score = min(depth-1, alpha, beta);
+			if (score.score > bestScore.score) {
 				bestScore = score;
 			}
 			move.undo(board, turn);
+			if (score.score > alpha) {
+				alpha = score.score;
+			}
+			if (beta <= alpha) {
+				// cut-off
+				break;
+			}
 		}
 		return bestScore;
 	}
 	
-	private int evaluate() {
-		switch (player) {
-		case 'H':
-			if ((board.getAllHPieces().size() == 0)) {
-				// H win
-				return Integer.MAX_VALUE-1;
-			} else if ((board.getAllHPieces().size() == 1) && (board.getAllHPieces().get(0).getX() == board.size()-1)) {
-				// one move to H win
-				return Integer.MAX_VALUE-2;
-			} else if ((board.getAllVPieces().size() == 0)) {
-				// V win
-				return Integer.MIN_VALUE+1;
-			} else if ((board.getAllVPieces().size() == 1) && (board.getAllVPieces().get(0).getY() == board.size()-1)) {
-				// one move to V win
-				return Integer.MIN_VALUE+2;
-			}
-			break;
-		case 'V':
-			if ((board.getAllHPieces().size() == 0)) {
-				// H win
-				return Integer.MIN_VALUE+1;
-			} else if ((board.getAllHPieces().size() == 1) && (board.getAllHPieces().get(0).getX() == board.size()-1)) {
-				// one move to H win
-				return Integer.MIN_VALUE+2;
-			} else if ((board.getAllVPieces().size() == 0)) {
-				// V win
-				return Integer.MAX_VALUE-1;
-			} else if ((board.getAllVPieces().size() == 1) && (board.getAllVPieces().get(0).getY() == board.size()-1)) {
-				// one move to V win
-				return Integer.MAX_VALUE-2;
-			}
-			break;
-		}
+	private Score evaluate() {
 		int hScore = 0;		// total number of moves away from leading edge of all H pieces
 		int vScore = 0;		// total number of moves away from bottom edge of all V pieces
 		int hEdges = 0;		// total number of H pieces at trailing edge
@@ -135,8 +123,12 @@ public class Minimax {
 		// calculate score for H
 		for (Piece p: board.getAllHPieces()) {
 			int pathSize = p.getX();
-			if ((p.getX() + 1 < board.size()) && (board.get(p.getX() + 1, p.getY()).getState() != State.BLANK)) {
-				pathSize--;
+			if (p.getX() + 1 < board.size()) {
+				for (int x = p.getX() + 1; x < board.size(); x++) {
+					if (board.get(x, p.getY()).getState() != State.BLANK) {
+						pathSize--;
+					}
+				}
 			}
 			hScore += pathSize;
 			if (p.getX() == board.size()-1) {
@@ -146,25 +138,39 @@ public class Minimax {
 		// calculate score for V
 		for (Piece p: board.getAllVPieces()) {
 			int pathSize = p.getY();
-			if ((p.getY() + 1 < board.size()) && (board.get(p.getX(), p.getY() + 1).getState() != State.BLANK)) {
-				pathSize--;
+			if (p.getY() + 1 < board.size()) {
+				for (int y = p.getY() + 1; y < board.size(); y++) {
+					if (board.get(p.getX(), y).getState() != State.BLANK) {
+						pathSize--;
+					}
+				}
 			}
 			vScore += pathSize;
 			if (p.getY() == board.size()-1) {
 				vEdges += 1;
 			}
 		}
-		// score formula: (myScore - enemyScore) + (myNumEgdes - enemyNumEdges)*boardSize + (myNumOffEdge - enemyNumOffEdge)*boardSize**2
+		
+		TDLeafLambda tdll = TDLeafLambda.getInstance();
+		double eval_c1 = 0.0;
+		double eval_c2 = 0.0;
+		double eval_c3 = 0.0;
 		int score = 0;
 		switch (player) {
 		case 'H':
-			score = (hScore - vScore) + (hEdges - vEdges)*board.size() + (board.getAllVPieces().size()-board.getAllHPieces().size())*board.size()*board.size();
+			eval_c1 = (hScore - vScore);
+			eval_c2 = (hEdges - vEdges);
+			eval_c3 = (board.getAllVPieces().size()-board.getAllHPieces().size())*board.size()*board.size();
+			score = (int) (eval_c1*tdll.getWeight(0) + eval_c2*tdll.getWeight(1) + eval_c3*tdll.getWeight(2));
 			break;
 		case 'V':
-			score = (vScore - hScore) + (vEdges - hEdges)*board.size() + (board.getAllHPieces().size()-board.getAllVPieces().size())*board.size()*board.size();
+			eval_c1 = (vScore - hScore);
+			eval_c2 = (vEdges - hEdges);
+			eval_c3 = (board.getAllHPieces().size()-board.getAllVPieces().size())*board.size()*board.size();
+			score = (int) (eval_c1*tdll.getWeight(0) + eval_c2*tdll.getWeight(1) + eval_c3*tdll.getWeight(2));
 			break;
 		}
-		return score;
+		return new Score(score, eval_c1, eval_c2, eval_c3);
 	}
 	
 	private ArrayList<MinimaxMove> getMoves(char turn) {
@@ -187,6 +193,22 @@ public class Minimax {
 			break;
 		}
 		return moves;
+	}
+	
+	private static class Score {
+		
+		private int score;
+		
+		private double eval_c1;
+		private double eval_c2;
+		private double eval_c3;
+		
+		public Score(int score, double eval_c1, double eval_c2, double eval_c3) {
+			this.score = score;
+			this.eval_c1 = eval_c1;
+			this.eval_c2 = eval_c2;
+			this.eval_c3 = eval_c3;
+		}
 	}
 	
 }
