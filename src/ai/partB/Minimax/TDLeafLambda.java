@@ -81,7 +81,7 @@ public class TDLeafLambda {
 		double tmp_2 = 0.0;
 		double tmp_3 = 0.0;
 		for (int i = 0; i < n-1; i++) {
-			// sum dr(s_i^l,w)/dw_j * td
+			// tmp_j = sum dr(s_i^l,w)/dw_j * td
 			double coe_1 = Math.pow(1.0/(Math.cosh(evals.get(i))), 2) * evals_c1.get(i);
 			double coe_2 = Math.pow(1.0/(Math.cosh(evals.get(i))), 2) * evals_c2.get(i);
 			double coe_3 = Math.pow(1.0/(Math.cosh(evals.get(i))), 2) * evals_c3.get(i);
@@ -90,11 +90,10 @@ public class TDLeafLambda {
 			tmp_3 += coe_3 * td;
 		}
 		
-		// update weights
+		// update weights; new_w_j <- old_w_j + alpha * tmp_j
 		double new_w1 = weights.get(0) + alpha*tmp_1;
 		double new_w2 = weights.get(1) + alpha*tmp_2;
 		double new_w3 = weights.get(2) + alpha*tmp_3;
-		
 		try {
 			FileWriter writer = new FileWriter(new File("learning/weight.txt"));
 			writer.write(new_w1 + " " + new_w2 + " " + new_w3);
