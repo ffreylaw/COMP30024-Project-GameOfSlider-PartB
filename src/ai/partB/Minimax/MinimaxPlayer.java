@@ -4,7 +4,7 @@ import aiproj.slider.*;
 import aiproj.slider.Move.Direction;
 
 /**
- * Player class
+ * Player using minimax algorithm
  */
 public class MinimaxPlayer implements SliderPlayer {
 	
