@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import aiproj.slider.Move.Direction;
 
+/**
+ * Minimax algorithm
+ */
 public class Minimax {
 	
 	private Board board;

@@ -5,6 +5,9 @@ import java.util.LinkedList;
 import aiproj.slider.Move;
 import aiproj.slider.Move.Direction;
 
+/**
+ * Strategy class
+ */
 public class Strategy {
 	
 	Board board;

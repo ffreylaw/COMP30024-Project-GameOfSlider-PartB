@@ -6,6 +6,9 @@ import java.util.Scanner;
 import aiproj.slider.Move;
 import aiproj.slider.Move.Direction;
 
+/**
+ * Board class for minimax player
+ */
 public class Board {
 
 	private Piece[][] grid;

@@ -1,5 +1,8 @@
 package ai.partB.Minimax;
 
+/**
+ * Cell class for A-Star algorithm
+ */
 public class AStarCell {
 	
 	private int fCost;
@@ -22,6 +25,7 @@ public class AStarCell {
 		this.piece = piece;
 	}
 	
+	// heuristic function
 	public int heuristic(AStarCell cell) {
 		int score = 0;
 		score += Math.abs(this.x - cell.x);

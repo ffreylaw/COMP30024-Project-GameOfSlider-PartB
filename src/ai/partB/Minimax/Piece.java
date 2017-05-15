@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import aiproj.slider.Move.Direction;
 
+/**
+ * Piece class for board
+ */
 public class Piece { 
 	
 	private int x, y;

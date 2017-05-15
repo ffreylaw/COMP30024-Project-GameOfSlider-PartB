@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * TD Leaf (Lambda) algorithm
+ */
 public class TDLeafLambda {
 	
 	private ArrayList<Double> weights;

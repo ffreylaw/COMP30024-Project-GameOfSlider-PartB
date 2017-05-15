@@ -3,6 +3,9 @@ package ai.partB.Minimax;
 import aiproj.slider.Move;
 import aiproj.slider.Move.Direction;
 
+/**
+ * Move class for Minimax algorithm
+ */
 public class MinimaxMove {
 	
 	private int x;
@@ -29,12 +32,22 @@ public class MinimaxMove {
 		return d;
 	}
 	
+	/**
+	 * Perform move
+	 * @param board
+	 * @param turn
+	 */
 	public void perform(Board board, char turn) {
 		Move move = new Move(x, y, d);
 		p = board.update(turn, move);
 		board.calculateLegalMoves();
 	}
 	
+	/**
+	 * Undo move
+	 * @param board
+	 * @param turn
+	 */
 	public void undo(Board board, char turn) {
 		int i = x;
 		int j = y;

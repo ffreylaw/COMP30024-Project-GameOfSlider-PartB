@@ -3,13 +3,16 @@ package ai.partB.Minimax;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * A-Star algorithm
+ */
 public class AStar {
 	
 	private AStarCell[][] grid;
 	private int size;
 	
-	private LinkedList<AStarCell> open;
-	private LinkedList<AStarCell> closed;
+	private LinkedList<AStarCell> open;		// The set of currently discovered nodes that are not evaluated yet.
+	private LinkedList<AStarCell> closed;	// The set of nodes already evaluated.
 	
 	private char player;
 	
@@ -30,11 +33,19 @@ public class AStar {
         closed = new LinkedList<AStarCell>();
 	}
 	
+	/**
+	 * Find path
+	 * @param sx: start position x
+	 * @param sy: start position y
+	 * @param tx: end position x
+	 * @param ty: end position y
+	 * @return path
+	 */
 	public final List<AStarCell> findPath(int sx, int sy, int tx, int ty) {
 		open.clear();
 		closed.clear();
         
-        open.add(grid[sx][sy]);
+        open.add(grid[sx][sy]);		// Initially, only the start node is known.
         player = grid[sx][sy].getPiece();
 
         boolean done = false;
@@ -76,6 +87,10 @@ public class AStar {
         return null;
     }
 	
+	/**
+	 * Get the lowest cost cell
+	 * @return lowest
+	 */
 	private AStarCell getLowestCostCell() {
 		AStarCell lowest = open.getFirst();
 		int lowestCost = lowest.getfCost();
@@ -88,6 +103,11 @@ public class AStar {
 		return lowest;
 	}
 	
+	/**
+	 * Get all neighbor cells
+	 * @param cell: current cell
+	 * @return list: list of neighbor cells
+	 */
 	private List<AStarCell> getNeighbor(AStarCell cell) {
 		LinkedList<AStarCell> list = new LinkedList<AStarCell>();
 		int x = cell.getX();
@@ -119,6 +139,12 @@ public class AStar {
 		return list;
 	}
 	
+	/**
+	 * Get the path from start to end
+	 * @param start: start cell
+	 * @param end: end cell
+	 * @return list: path
+	 */
 	private List<AStarCell> calculatePath(AStarCell start, AStarCell end) {
 		LinkedList<AStarCell> list = new LinkedList<AStarCell>();
 		AStarCell cell = end;

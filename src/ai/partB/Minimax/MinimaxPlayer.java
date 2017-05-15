@@ -3,6 +3,9 @@ package ai.partB.Minimax;
 import aiproj.slider.*;
 import aiproj.slider.Move.Direction;
 
+/**
+ * Player class
+ */
 public class MinimaxPlayer implements SliderPlayer {
 	
 	private Board board;
@@ -34,6 +37,11 @@ public class MinimaxPlayer implements SliderPlayer {
 		// check if winning state and make the winning move
 		switch (player) {
 		case 'H':
+			// one move to win
+			if ((board.getAllHPieces().size() == 1) && (board.getAllHPieces().get(0).getX() == board.size()-1)) {
+				//tdll.finalize();
+				return new Move(board.getAllHPieces().get(0).getX(), board.getAllHPieces().get(0).getY(), Direction.RIGHT);
+			}
 			// check if all pieces at edge, just make the winning move
 			boolean allHPiecesAtEdge = true;
 			for (Piece p: board.getAllHPieces()) {
@@ -48,6 +56,11 @@ public class MinimaxPlayer implements SliderPlayer {
 			}
 			break;
 		case 'V':
+			// one move to win
+			if ((board.getAllVPieces().size() == 1) && (board.getAllVPieces().get(0).getY() == board.size()-1)) {
+				//tdll.finalize();
+				return new Move(board.getAllVPieces().get(0).getX(), board.getAllVPieces().get(0).getY(), Direction.UP);
+			}
 			// check if all pieces at edge, just make the winning move
 			boolean allVPiecesAtEdge = true;
 			for (Piece p: board.getAllVPieces()) {
