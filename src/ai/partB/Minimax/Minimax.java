@@ -76,7 +76,7 @@ public class Minimax {
 				beta = score.score;
 			}
 			if (beta <= alpha) {
-				// cut-off
+				// alpha cut-off
 				break;
 			}
 		}
@@ -113,7 +113,7 @@ public class Minimax {
 				alpha = score.score;
 			}
 			if (beta <= alpha) {
-				// cut-off
+				// beta cut-off
 				break;
 			}
 		}

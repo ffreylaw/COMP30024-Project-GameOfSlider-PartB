@@ -51,14 +51,19 @@ public class AStar {
             List<AStarCell> neighborNodes = getNeighbor(current);
             for (AStarCell neighbor: neighborNodes) {
             	if (closed.contains(neighbor)) {
+            		// Ignore the neighbor which is already evaluated.
             		continue;
             	}
+            	// The distance from start to a neighbor
             	int tentative_gScore = current.getgCost() + 1;
                 if (!open.contains(neighbor)) {
+                	// Discover a new node
                     open.add(neighbor);
                 } else if (tentative_gScore >= neighbor.getgCost()) {
+                	// This is not a better path.
                     continue;
                 }
+                // This path is the best until now. Record it!
                 neighbor.setPrev(current);
             	neighbor.setgCost(tentative_gScore);
             	neighbor.setfCost(neighbor.getgCost() + neighbor.heuristic(grid[tx][ty]));
