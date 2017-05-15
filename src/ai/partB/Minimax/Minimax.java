@@ -46,6 +46,8 @@ public class Minimax {
 		tdll.addEvalC3(bestScore.eval_c3);
 		tdll.addEvalC4(bestScore.eval_c4);
 		
+		//tdll.finalize();
+		
 		return bestMove;
 	}
 	

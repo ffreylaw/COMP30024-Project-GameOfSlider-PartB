@@ -20,7 +20,7 @@ public class TDLeafLambda {
 	
 	private Scanner reader;
 	
-	private static final String FILENAME = "learning/weight.txt";
+	private static final String FILENAME = "learning/weight_h_5.txt";
 	
 	public TDLeafLambda() {
 		weights = new ArrayList<Double>();
@@ -76,11 +76,7 @@ public class TDLeafLambda {
 		double alpha = 1.0;
 		double lambda = 0.7;
 		
-		double td = 0.0;
-		for (int m = 0; m < n-1; m++) {
-			// td = sum lambda * temporal difference
-			td += lambda * (rewards.get(m+1) - rewards.get(m));
-		}
+		
 		
 		double tmp_1 = 0.0;
 		double tmp_2 = 0.0;
@@ -92,6 +88,11 @@ public class TDLeafLambda {
 			double coe_2 = Math.pow(1.0/(Math.cosh(evals.get(i))), 2) * evals_c2.get(i);
 			double coe_3 = Math.pow(1.0/(Math.cosh(evals.get(i))), 2) * evals_c3.get(i);
 			double coe_4 = Math.pow(1.0/(Math.cosh(evals.get(i))), 2) * evals_c4.get(i);
+			double td = 0.0;
+			for (int m = 0; m < n-1; m++) {
+				// td = sum lambda * temporal difference
+				td += Math.pow(lambda, m-i) * (rewards.get(m+1) - rewards.get(m));
+			}
 			tmp_1 += coe_1 * td;
 			tmp_2 += coe_2 * td;
 			tmp_3 += coe_3 * td;

@@ -39,7 +39,7 @@ public class MinimaxPlayer implements SliderPlayer {
 		case 'H':
 			// one move to win
 			if ((board.getAllHPieces().size() == 1) && (board.getAllHPieces().get(0).getX() == board.size()-1)) {
-				//tdll.finalize();
+				tdll.finalize();
 				return new Move(board.getAllHPieces().get(0).getX(), board.getAllHPieces().get(0).getY(), Direction.RIGHT);
 			}
 			// check if all pieces at edge, just make the winning move
@@ -58,7 +58,7 @@ public class MinimaxPlayer implements SliderPlayer {
 		case 'V':
 			// one move to win
 			if ((board.getAllVPieces().size() == 1) && (board.getAllVPieces().get(0).getY() == board.size()-1)) {
-				//tdll.finalize();
+				tdll.finalize();
 				return new Move(board.getAllVPieces().get(0).getX(), board.getAllVPieces().get(0).getY(), Direction.UP);
 			}
 			// check if all pieces at edge, just make the winning move
