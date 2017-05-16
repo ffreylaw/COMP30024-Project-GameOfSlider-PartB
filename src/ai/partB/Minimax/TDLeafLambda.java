@@ -18,9 +18,26 @@ public class TDLeafLambda {
 	private ArrayList<Double> evals_c3;
 	private ArrayList<Double> evals_c4;
 	
+	// trained weights
+	public static final double H_WEIGHT_1 = 3.9216343435338348;
+	public static final double H_WEIGHT_2 = 1.7138357369197565;
+	public static final double H_WEIGHT_3 = 0.7683711097108844;
+	public static final double H_WEIGHT_4 = 1.2888768116460996;
+	
+	public static final double V_WEIGHT_1 = 4.6083601998071915;
+	public static final double V_WEIGHT_2 = 1.7138357369197565;
+	public static final double V_WEIGHT_3 = 2.323526695332643;
+	public static final double V_WEIGHT_4 = 1.2166335034280624;
+	
+	// initial weights
+	public static final double WEIGHT_1 = 1.0;
+	public static final double WEIGHT_2 = 1.0;
+	public static final double WEIGHT_3 = 1.0;
+	public static final double WEIGHT_4 = 1.0;
+	
 	private Scanner reader;
 	
-	private static final String FILENAME = "learning/weight_h_5.txt";
+	private static final String FILENAME = "learning/weight.txt";
 	
 	public TDLeafLambda() {
 		weights = new ArrayList<Double>();
@@ -37,7 +54,6 @@ public class TDLeafLambda {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		System.out.println(weights.size());
 	}
 	
 	public double getWeight(int index) {
@@ -75,8 +91,6 @@ public class TDLeafLambda {
 		
 		double alpha = 1.0;
 		double lambda = 0.7;
-		
-		
 		
 		double tmp_1 = 0.0;
 		double tmp_2 = 0.0;

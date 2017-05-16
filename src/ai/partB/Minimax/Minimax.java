@@ -12,13 +12,18 @@ public class Minimax {
 	private Board board;
 	private char player;
 	
-	private TDLeafLambda tdll;
+//	private TDLeafLambda tdll;
 	
-	public Minimax(Board board, char player, TDLeafLambda tdll) {
+	public Minimax(Board board, char player) {
 		this.board = board;
 		this.player = player;
-		this.tdll = tdll;
 	}
+	
+//	public Minimax(Board board, char player, TDLeafLambda tdll) {
+//		this.board = board;
+//		this.player = player;
+//		this.tdll = tdll;
+//	}
 	
 	public MinimaxMove run(int depth) {
 		// get all legal moves of me
@@ -41,17 +46,15 @@ public class Minimax {
 			move.undo(board, player);
 		}
 		
-		tdll.addEvalC1(bestScore.eval_c1);
-		tdll.addEvalC2(bestScore.eval_c2);
-		tdll.addEvalC3(bestScore.eval_c3);
-		tdll.addEvalC4(bestScore.eval_c4);
-		
-		//tdll.finalize();
+//		tdll.addEvalC1(bestScore.eval_c1);
+//		tdll.addEvalC2(bestScore.eval_c2);
+//		tdll.addEvalC3(bestScore.eval_c3);
+//		tdll.addEvalC4(bestScore.eval_c4);
 		
 		return bestMove;
 	}
 	
-	private Score min(int depth, int alpha, int beta) {
+	private Score min(int depth, double alpha, double beta) {
 		// enemy's turn
 		char turn = player == 'H' ? 'V' : 'H';
 		
@@ -88,7 +91,7 @@ public class Minimax {
 		return bestScore;
 	}
 	
-	private Score max(int depth, int alpha, int beta) {
+	private Score max(int depth, double alpha, double beta) {
 		// my turn
 		char turn = player;
 		
@@ -161,21 +164,35 @@ public class Minimax {
 		double eval_c2 = 0.0;	// feature 2: num pieces get blocked
 		double eval_c3 = 0.0;	// feature 3: num pieces at edge
 		double eval_c4 = 0.0; 	// feature 4: num pieces off edge
-		int score = 0;
+		double score = 0;
 		switch (player) {
 		case 'H':
 			eval_c1 = (hSteps - vSteps);
 			eval_c2	= (hBlocks - vBlocks);
 			eval_c3 = (hEdges - vEdges);
 			eval_c4 = (board.getAllVPieces().size()-board.getAllHPieces().size())*board.size()*board.size();
-			score = (int) (eval_c1*tdll.getWeight(0) + eval_c2*tdll.getWeight(1) + eval_c3*tdll.getWeight(2) + eval_c4*tdll.getWeight(3));
+			score = eval_c1*TDLeafLambda.H_WEIGHT_1 + 
+					eval_c2*TDLeafLambda.H_WEIGHT_2 + 
+					eval_c3*TDLeafLambda.H_WEIGHT_3 + 
+					eval_c4*TDLeafLambda.H_WEIGHT_4;
+//			score = eval_c1*tdll.getWeight(0) + 
+//					eval_c2*tdll.getWeight(1) + 
+//					eval_c3*tdll.getWeight(2) + 
+//					eval_c4*tdll.getWeight(3);
 			break;
 		case 'V':
 			eval_c1 = (vSteps - hSteps);
 			eval_c2 = (vBlocks - vBlocks);
 			eval_c3 = (vEdges - hEdges);
 			eval_c4 = (board.getAllHPieces().size()-board.getAllVPieces().size())*board.size()*board.size();
-			score = (int) (eval_c1*tdll.getWeight(0) + eval_c2*tdll.getWeight(1) + eval_c3*tdll.getWeight(2) + eval_c4*tdll.getWeight(3));
+			score = eval_c1*TDLeafLambda.V_WEIGHT_1 + 
+					eval_c2*TDLeafLambda.V_WEIGHT_2 + 
+					eval_c3*TDLeafLambda.V_WEIGHT_3 + 
+					eval_c4*TDLeafLambda.V_WEIGHT_4;
+//			score = eval_c1*tdll.getWeight(0) + 
+//					eval_c2*tdll.getWeight(1) + 
+//					eval_c3*tdll.getWeight(2) + 
+//					eval_c4*tdll.getWeight(3);
 			break;
 		}
 		return new Score(score, eval_c1, eval_c2, eval_c3, eval_c4);
@@ -207,14 +224,14 @@ public class Minimax {
 	 */
 	private static class Score {
 		
-		private int score;
+		private double score;
 		
 		private double eval_c1;
 		private double eval_c2;
 		private double eval_c3;
 		private double eval_c4;
 		
-		public Score(int score, double eval_c1, double eval_c2, double eval_c3, double eval_c4) {
+		public Score(double score, double eval_c1, double eval_c2, double eval_c3, double eval_c4) {
 			this.score = score;
 			this.eval_c1 = eval_c1;
 			this.eval_c2 = eval_c2;
