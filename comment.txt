@@ -1,0 +1,54 @@
+THE GAME OF SLIDER -- AI AGENT
+Geoffrey Law (759218) Tian Luan (769321)
+
+Me name potato. (Let me introduce myself, my name is ...)
+
+Out player is using minimax algorithm with alpha-beta pruning associate with
+TDLeaf Lambda machine learning algorithm.
+
+Minimax depth is six, which the deepest layer will be a max layer in order to
+compatible with TDLeaf. The correctness of the agent has been checked precisely
+on every single implementation of algorithms. For example, we firstly implement
+the pure minimax, then run several times to check any error or unexpected logic.
+Once to ensure this algorithms is correct, we move to the next one, and so on.
+
+Our evaluate function includes four features; the total straight line distance
+between the starting edge and each player's piece, the total number of players'
+pieces that are blocked by the enemy, the total number of players' pieces are
+on the edge, the total number of players' pieces are already off the edge.
+Initially, each features multiplying a weight 1.0 to get the final score of a
+state. These weight will be use as initial weights for TDLeaf training.
+
+Alpha-beta pruning cut offs useless expanding nodes to increase the efficient
+of the program. This makes our minimax can efficiently expands to depth six,
+though the program expands to depth four takes very slow before we applied
+alpha-beta pruning. Effectively improve the performance by allowing the program
+to predict more significant score in further movements.
+
+TDLeaf Lambda algorithm is fully composited into minimax. In every minimax
+calling, each feature coefficients are added into TDLeaf object. After a game is
+finished, TDLeaf will finalize a training; to calculate and update all weights
+by the TDLeaf weights update formulae. To train our agent, we run our game more
+than 1,000 times for each player side, the weights are keep updating during each
+games. However, there possibly have outliers, to solve this problem we manually
+check each updates whether is reliable, if not then roll back the update.
+
+In our final submission, all TDLeaf training methods calling are commented and
+will not be called during future running, all trained weights are stored in
+TDLeafLambda class as static constants, so minimax will directly access these
+constants from TDLeafLambda class for calculation of evaluate function.
+
+To verify our agent has improved, we test it with initial weights and with
+trained weights respectively. After a large number of running, we end up with
+this statistical data:
+---------------------------------------------------
+   | winning percentage   |   winning percentage
+   | with initial weights |   with trained weights
+---|----------------------|------------------------
+ H | 90.2%                | 95.5%
+---|----------------------|------------------------
+ V | 90.7%                | 92.3%
+---------------------------------------------------
+These percentages are tested by board size = 5. Statistically, in our several
+different cases testing, the percentages will increase while the board size is
+increase.

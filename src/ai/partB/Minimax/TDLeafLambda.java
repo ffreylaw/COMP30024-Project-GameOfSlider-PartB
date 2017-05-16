@@ -18,12 +18,13 @@ public class TDLeafLambda {
 	private ArrayList<Double> evals_c3;
 	private ArrayList<Double> evals_c4;
 	
-	// trained weights
+	// trained weights for H
 	public static final double H_WEIGHT_1 = 3.9216343435338348;
 	public static final double H_WEIGHT_2 = 1.7138357369197565;
 	public static final double H_WEIGHT_3 = 0.7683711097108844;
 	public static final double H_WEIGHT_4 = 1.2888768116460996;
 	
+	// trained weights for V
 	public static final double V_WEIGHT_1 = 4.6083601998071915;
 	public static final double V_WEIGHT_2 = 1.7138357369197565;
 	public static final double V_WEIGHT_3 = 2.323526695332643;
