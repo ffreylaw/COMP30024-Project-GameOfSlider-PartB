@@ -30,9 +30,9 @@ public class Referee {
 		/* * * *
 		 * then, set up the board and initialise the players
 		 */
-		int hWins = 0;
-		int vWins = 0;
-		for (int i = 0; i < 1000; i++) {
+//		int hWins = 0;
+//		int vWins = 0;
+//		for (int i = 0; i < 1000; i++) {
 		// create a new board
 		Board board = new Board(options.dimension);
 		
@@ -66,8 +66,8 @@ public class Referee {
 		Move previousMove = null;
 		String message = null;
 		
-		//render(board);
-		boolean flag = false;
+		render(board);
+//		boolean flag = false;
 		// game loop
 		while (!board.finished()) {
 
@@ -92,16 +92,16 @@ public class Referee {
 			// other player's turn next
 			turn = Player.other(turn);
 			
-			//render(board);
-			if (times[Player.H]/1000000 > 3000 ||
-				times[Player.V]/1000000 > 3000) {
-				flag = true;
-				break;
-			}
+			render(board);
+//			if (times[Player.H]/1000000 > 10000 ||
+//				times[Player.V]/1000000 > 10000) {
+//				flag = true;
+//				break;
+//			}
 		}
-		if (flag) {
-			continue;
-		}
+//		if (flag) {
+//			continue;
+//		}
 		
 
 		/* * * *
@@ -109,12 +109,12 @@ public class Referee {
 		 */
 
 		if(board.finished()) {
-			if (board.winner() == "horizontal!") {
-				hWins++;
-			}
-			if (board.winner() == "vertical!") {
-				vWins++;
-			}
+//			if (board.winner() == "horizontal!") {
+//				hWins++;
+//			}
+//			if (board.winner() == "vertical!") {
+//				vWins++;
+//			}
 			System.out.println("winner: " + board.winner());
 			System.out.println("times:");
 			System.out.println(" horizontal ~"+ times[Player.H]/1000000 +"ms");
@@ -125,9 +125,9 @@ public class Referee {
 			System.out.println(" " + message);
 			System.out.println(" (move: " + previousMove + ")");
 		}
-		System.out.println(i);
-		}
-		System.out.println(hWins + " " + vWins);
+//		System.out.println(i);
+//		}
+//		System.out.println(hWins + " " + vWins);
 	}
 
 	/** Helper function for rendering a board */
