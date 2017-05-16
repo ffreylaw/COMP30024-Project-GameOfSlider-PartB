@@ -93,32 +93,28 @@ public class TDLeafLambda {
 		double alpha = 1.0;
 		double lambda = 0.7;
 		
-		double tmp_1 = 0.0;
-		double tmp_2 = 0.0;
-		double tmp_3 = 0.0;
-		double tmp_4 = 0.0;
+		double sum_1 = 0.0;
+		double sum_2 = 0.0;
+		double sum_3 = 0.0;
+		double sum_4 = 0.0;
 		for (int i = 0; i < n-1; i++) {
 			// tmp_j = sum dr(s_i^l,w)/dw_j * td
-			double coe_1 = Math.pow(1.0/(Math.cosh(evals.get(i))), 2) * evals_c1.get(i);
-			double coe_2 = Math.pow(1.0/(Math.cosh(evals.get(i))), 2) * evals_c2.get(i);
-			double coe_3 = Math.pow(1.0/(Math.cosh(evals.get(i))), 2) * evals_c3.get(i);
-			double coe_4 = Math.pow(1.0/(Math.cosh(evals.get(i))), 2) * evals_c4.get(i);
 			double td = 0.0;
 			for (int m = 0; m < n-1; m++) {
 				// td = sum lambda * temporal difference
 				td += Math.pow(lambda, m-i) * (rewards.get(m+1) - rewards.get(m));
 			}
-			tmp_1 += coe_1 * td;
-			tmp_2 += coe_2 * td;
-			tmp_3 += coe_3 * td;
-			tmp_4 += coe_4 * td;
+			sum_1 += Math.pow(1.0/(Math.cosh(evals.get(i))), 2) * evals_c1.get(i) * td;
+			sum_2 += Math.pow(1.0/(Math.cosh(evals.get(i))), 2) * evals_c2.get(i) * td;
+			sum_3 += Math.pow(1.0/(Math.cosh(evals.get(i))), 2) * evals_c3.get(i) * td;
+			sum_4 += Math.pow(1.0/(Math.cosh(evals.get(i))), 2) * evals_c4.get(i) * td;
 		}
 		
 		// update weights; new_w_j <- old_w_j + alpha * tmp_j
-		double new_w1 = weights.get(0) + alpha*tmp_1;
-		double new_w2 = weights.get(1) + alpha*tmp_2;
-		double new_w3 = weights.get(2) + alpha*tmp_3;
-		double new_w4 = weights.get(3) + alpha*tmp_4;
+		double new_w1 = weights.get(0) + alpha * sum_1;
+		double new_w2 = weights.get(1) + alpha * sum_2;
+		double new_w3 = weights.get(2) + alpha * sum_3;
+		double new_w4 = weights.get(3) + alpha * sum_4;
 		// write new weights to file
 		try {
 			FileWriter writer = new FileWriter(new File(FILENAME));
