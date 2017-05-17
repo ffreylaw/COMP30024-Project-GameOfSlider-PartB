@@ -51,7 +51,7 @@ public class MinimaxMove {
 	}
 	
 	/**
-	 * Perform move
+	 * Perform next move
 	 * @param board
 	 * @param turn
 	 */
@@ -62,7 +62,7 @@ public class MinimaxMove {
 	}
 	
 	/**
-	 * Undo move
+	 * Undo last move
 	 * @param board
 	 * @param turn
 	 */
