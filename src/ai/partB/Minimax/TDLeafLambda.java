@@ -40,6 +40,9 @@ public class TDLeafLambda {
 	
 	private static final String FILENAME = "learning/weight.txt";
 	
+	/**
+	 * Initialize a TDLeafLambda environment
+	 */
 	public TDLeafLambda() {
 		weights = new ArrayList<Double>();
 		evals_c1 = new ArrayList<Double>();
@@ -48,6 +51,7 @@ public class TDLeafLambda {
 		evals_c4 = new ArrayList<Double>();
 		
 		try {
+			// read weights
 			reader = new Scanner(new File(FILENAME));
 			while (reader.hasNextDouble()) {
 				weights.add(reader.nextDouble());
@@ -57,26 +61,50 @@ public class TDLeafLambda {
 		}
 	}
 	
+	/**
+	 * Get weight at index
+	 * @param index
+	 * @return weight: at given index
+	 */
 	public double getWeight(int index) {
 		return weights.get(index);
 	}
 	
+	/**
+	 * Add evaluated feature 1 to eval_c1 array
+	 * @param eval_c1
+	 */
 	public void addEvalC1(double eval_c1) {
 		evals_c1.add(eval_c1);
 	}
 	
+	/**
+	 * Add evaluated feature 2 to eval_c2 array
+	 * @param eval_c2
+	 */
 	public void addEvalC2(double eval_c2) {
 		evals_c2.add(eval_c2);
 	}
 	
+	/**
+	 * Add evaluated feature 3 to eval_c3 array
+	 * @param eval_c3
+	 */
 	public void addEvalC3(double eval_c3) {
 		evals_c3.add(eval_c3);
 	}
 	
+	/**
+	 * Add evaluated feature 4 to eval_c4 array
+	 * @param eval_c4
+	 */
 	public void addEvalC4(double eval_c4) {
 		evals_c4.add(eval_c4);
 	}
 	
+	/**
+	 * Finalize a learning
+	 */
 	public void finalize() {
 		// get size
 		int n = evals_c1.size();
@@ -115,6 +143,7 @@ public class TDLeafLambda {
 		double new_w2 = weights.get(1) + alpha * sum_2;
 		double new_w3 = weights.get(2) + alpha * sum_3;
 		double new_w4 = weights.get(3) + alpha * sum_4;
+		
 		// write new weights to file
 		try {
 			FileWriter writer = new FileWriter(new File(FILENAME));
@@ -123,8 +152,7 @@ public class TDLeafLambda {
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		
+		}	
 	}
 	
 }

@@ -16,8 +16,11 @@ Our evaluate function includes four features; the total straight line distance
 between the starting edge and each player's piece, the total number of players'
 pieces that are blocked by the enemy, the total number of players' pieces are
 on the edge, the total number of players' pieces are already off the edge.
-Initially, each features multiplying a weight 1.0 to get the final score of a
-state. These weight will be use as initial weights for TDLeaf training.
+Initially, each feature multiplying a weight 1.0 to get the final score of a
+state. These weight will be use as initial weights for TDLeaf training. The last
+feature, is the most important feature in a game (in our perspective), so we
+have initially multiply this feature by (board size)^2 (this is not part of the
+weights) in case of importance.
 
 Alpha-beta pruning cut offs useless expanding nodes to increase the efficient
 of the program. This makes our minimax can efficiently expands to depth six,
@@ -28,10 +31,13 @@ to predict more significant score in further movements.
 TDLeaf Lambda algorithm is fully composited into minimax. In every minimax
 calling, each feature coefficients are added into TDLeaf object. After a game is
 finished, TDLeaf will finalize a training; to calculate and update all weights
-by the TDLeaf weights update formulae. To train our agent, we run our game more
-than 1,000 times for each player side, the weights are keep updating during each
-games. However, there possibly have outliers, to solve this problem we manually
-check each updates whether is reliable, if not then roll back the update.
+by the TDLeaf weights update formulae given in the lecture. To train our agent,
+we set initial weights 1.0 for all features and put these in a text file, then
+we run our game more than 1,000 times for each player side against our random
+simple player, get the weights from reading file and update the weights after
+each game then write to file. However, there possibly have outliers, to solve
+this problem after each game we manually check each update whether is reliable,
+if not then roll back the file of this specific update.
 
 In our final submission, all TDLeaf training methods calling are commented and
 will not be called during future running, all trained weights are stored in

@@ -13,6 +13,12 @@ public class MinimaxMove {
 	private Direction d;
 	private Piece p;
 	
+	/**
+	 * Initialize a minimax move
+	 * @param x
+	 * @param y
+	 * @param d
+	 */
 	public MinimaxMove(int x, int y, Direction d) { 
 		this.x = x;
 		this.y = y;
@@ -20,14 +26,26 @@ public class MinimaxMove {
 		this.p = null;
 	}
 	
+	/**
+	 * Get x position
+	 * @return x
+	 */
 	public int getX() {
 		return x;
 	}
-
+	
+	/**
+	 * Get y position
+	 * @return y
+	 */
 	public int getY() {
 		return y;
 	}
-
+	
+	/**
+	 * Get direction
+	 * @return d
+	 */
 	public Direction getDirection() {
 		return d;
 	}

@@ -21,7 +21,12 @@ public class Board {
 	private int numLegalVMoves;
 	
 	private Scanner reader;
-
+	
+	/**
+	 * Initialize a board
+	 * @param dimension
+	 * @param board
+	 */
 	public Board(int dimension, String board) {
 		reader = new Scanner(board);
 		
@@ -48,18 +53,40 @@ public class Board {
 		calculateLegalMoves();
 	}
 	
+	/**
+	 * Get dimension of the board
+	 * @return size
+	 */
 	public int size() {
 		return this.size;
 	}
 	
+	/**
+	 * Get the piece of given position
+	 * @param x
+	 * @param y
+	 * @return grid[x][y]
+	 */
 	public Piece get(int x, int y) {
 		return grid[x][y];
 	}
 	
+	/**
+	 * Set the board by given piece
+	 * @param x
+	 * @param y
+	 * @param p
+	 */
 	public void set(int x, int y, Piece p) {
 		this.grid[x][y] = p;
 	}
 	
+	/**
+	 * Set the board by given player char
+	 * @param x
+	 * @param y
+	 * @param ch
+	 */
 	private void set(int x, int y, char ch) {
 		switch (ch) {
 		case 'H':
@@ -81,22 +108,41 @@ public class Board {
 		}
 	}
 	
+	/**
+	 * Add H piece to array
+	 * @param p
+	 */
 	public void addHPiece(Piece p) {
 		this.allHPieces.add(p);
 	}
 	
+	/**
+	 * Add V piece to array
+	 * @param p
+	 */
 	public void addVPiece(Piece p) {
 		this.allVPieces.add(p);
 	}
 	
+	/**
+	 * Get H piece array
+	 * @return allHPieces
+	 */
 	public ArrayList<Piece> getAllHPieces() {
 		return allHPieces;
 	}
-
+	
+	/**
+	 * Get V piece array
+	 * @return allVPieces
+	 */
 	public ArrayList<Piece> getAllVPieces() {
 		return allVPieces;
 	}
-
+	
+	/**
+	 * Calculate and update legal moves
+	 */
 	public void calculateLegalMoves() {
 		numLegalHMoves = 0;
 		numLegalVMoves = 0;
@@ -156,14 +202,28 @@ public class Board {
 
 	}
 	
+	/**
+	 * Get number of legal moves for H
+	 * @return numLegalHMoves
+	 */
 	public int getNumLegalHMoves() {
 		return numLegalHMoves;
 	}
-
+	
+	/**
+	 * Get number of legal moves for V
+	 * @return numLegalVMoves
+	 */
 	public int getNumLegalVMoves() {
 		return numLegalVMoves;
 	}
-
+	
+	/**
+	 * Update the board by given move
+	 * @param player
+	 * @param move
+	 * @return piece: if there a piece is off edge, for further minimax undo action flagging.
+	 */
 	public Piece update(char player, Move move) {
 		// detect null move (pass)
 		if (move == null) {

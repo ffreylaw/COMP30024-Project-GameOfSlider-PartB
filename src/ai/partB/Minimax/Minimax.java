@@ -14,6 +14,11 @@ public class Minimax {
 	
 //	private TDLeafLambda tdll;
 	
+	/**
+	 * Initialize a minimax environment
+	 * @param board
+	 * @param player
+	 */
 	public Minimax(Board board, char player) {
 		this.board = board;
 		this.player = player;
@@ -25,6 +30,11 @@ public class Minimax {
 //		this.tdll = tdll;
 //	}
 	
+	/**
+	 * Run the minimax algorithm
+	 * @param depth
+	 * @return bestMove: the maximized move 
+	 */
 	public MinimaxMove run(int depth) {
 		// get all legal moves of me
 		ArrayList<MinimaxMove> moves = getMoves(player);
@@ -54,6 +64,13 @@ public class Minimax {
 		return bestMove;
 	}
 	
+	/**
+	 * Minimize call for minimax
+	 * @param depth
+	 * @param alpha
+	 * @param beta
+	 * @return bestScore: the best score
+	 */
 	private Score min(int depth, double alpha, double beta) {
 		// enemy's turn
 		char turn = player == 'H' ? 'V' : 'H';
@@ -91,6 +108,13 @@ public class Minimax {
 		return bestScore;
 	}
 	
+	/**
+	 * Maximize call for minimax
+	 * @param depth
+	 * @param alpha
+	 * @param beta
+	 * @return bestScore: the best score
+	 */
 	private Score max(int depth, double alpha, double beta) {
 		// my turn
 		char turn = player;
@@ -128,6 +152,10 @@ public class Minimax {
 		return bestScore;
 	}
 	
+	/**
+	 * Evaluate function
+	 * @return score: evaluated score
+	 */
 	private Score evaluate() {
 		int hSteps = 0;		// total number of moves away from leading edge of all H pieces
 		int vSteps = 0;		// total number of moves away from bottom edge of all V pieces
@@ -198,6 +226,11 @@ public class Minimax {
 		return new Score(score, eval_c1, eval_c2, eval_c3, eval_c4);
 	}
 	
+	/**
+	 * Get all current legal moves of current turn
+	 * @param turn
+	 * @return moves: list of legal moves
+	 */
 	private ArrayList<MinimaxMove> getMoves(char turn) {
 		// get all legal moves of current turn
 		ArrayList<MinimaxMove> moves = new ArrayList<MinimaxMove>();
