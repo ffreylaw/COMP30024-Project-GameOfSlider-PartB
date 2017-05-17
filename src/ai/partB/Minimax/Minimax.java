@@ -46,13 +46,21 @@ public class Minimax {
 		// get the first move and start iterate each moves and start recursion
 		MinimaxMove bestMove = moves.get(0);
 		Score bestScore = new Score(Integer.MIN_VALUE, 0.0, 0.0, 0.0, 0.0);
+		
 		for (MinimaxMove move: moves) {
+			// perform a move to current state
 			move.perform(board, player);
+			
+			// start recursion
 			Score score = min(depth-1, Integer.MIN_VALUE, Integer.MAX_VALUE);
+			
+			// get the best score and the best move 
 			if (score.score > bestScore.score) {
 				bestMove = move;
 				bestScore = score;
 			}
+			
+			// undo the move
 			move.undo(board, player);
 		}
 		
@@ -96,6 +104,7 @@ public class Minimax {
 				bestScore = score;
 			}
 			move.undo(board, turn);
+			
 			// alpha-beta pruning
 			if (score.score < beta) {
 				beta = score.score;
@@ -140,6 +149,7 @@ public class Minimax {
 				bestScore = score;
 			}
 			move.undo(board, turn);
+			
 			// alpha-beta pruning
 			if (score.score > alpha) {
 				alpha = score.score;
