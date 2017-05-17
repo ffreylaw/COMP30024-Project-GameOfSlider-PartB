@@ -1,51 +1,27 @@
 THE GAME OF SLIDER -- AI AGENT
 Geoffrey Law (759218) Tian Luan (769321)
 
-Me name potato. (Let me introduce myself, my name is ...)
+Our player uses minimax algorithm with alpha-beta pruning and TDLeaf Lambda machine learning algorithm.
 
-Out player is using minimax algorithm with alpha-beta pruning associate with
-TDLeaf Lambda machine learning algorithm.
+Minimax depth is 7. The layer under the root layer was implemented as a max layer, then use minimax recursively six times on that layer, so the deepest layer will be a max layer. The strategy was designed like this in order to be compatible with TDLeaf algorithm. The correctness of the agent has been checked precisely over each single implementation of algorithms. For example, we firstly implemented a pure minimax, then run several times to check any error or unexpected logic. Once the performance and the correctness of this was guaranteed, we would move to alpha-beta pruning, and then TDleaf.
 
-Minimax depth is six, which the deepest layer will be a max layer in order to
-compatible with TDLeaf. The correctness of the agent has been checked precisely
-on every single implementation of algorithms. For example, we firstly implement
-the pure minimax, then run several times to check any error or unexpected logic.
-Once to ensure this algorithms is correct, we move to the next one, and so on.
+Our evaluation function includes four features. 
+1.	The sum of the length of each perpendicular line from each of my player’s pieces to the starting edge minus that of the opponent. 
+2.	The total number of my player's pieces that are being blocked (by opponent or blocking square) minus that of the opponent.
+3.	The total number of my player's pieces that are on the edge minus that of the opponent.
+4.	The total number of my player' pieces that are already off the edge minus that of the opponent.
 
-Our evaluate function includes four features; the total straight line distance
-between the starting edge and each player's piece, the total number of players'
-pieces that are blocked by the enemy, the total number of players' pieces are
-on the edge, the total number of players' pieces are already off the edge.
-Initially, each feature multiplying a weight 1.0 to get the final score of a
-state. These weight will be use as initial weights for TDLeaf training. The last
-feature, is the most important feature in a game (in our perspective), so we
-have initially multiply this feature by (board size)^2 (this is not part of the
-weights) in case of importance.
+Initially, each feature is multiplied by weight 1.0. (These weights are used as initial weights for TDLeaf training.)
 
-Alpha-beta pruning cut offs useless expanding nodes to increase the efficient
-of the program. This makes our minimax can efficiently expands to depth six,
-though the program expands to depth four takes very slow before we applied
-alpha-beta pruning. Effectively improve the performance by allowing the program
-to predict more significant score in further movements.
+Alpha-beta pruning cuts off branches which are unlikely to affect the final decision. This helps our minimax tree efficiently expand six layers. 
 
-TDLeaf Lambda algorithm is fully composited into minimax. In every minimax
-calling, each feature coefficients are added into TDLeaf object. After a game is
-finished, TDLeaf will finalize a training; to calculate and update all weights
-by the TDLeaf weights update formulae given in the lecture. To train our agent,
-we set initial weights 1.0 for all features and put these in a text file, then
-we run our game more than 1,000 times for each player side against our random
-simple player, get the weights from reading file and update the weights after
-each game then write to file. However, there possibly have outliers, to solve
-this problem after each game we manually check each update whether is reliable,
-if not then roll back the file of this specific update.
+TDLeaf Lambda algorithm is fully fitted into minimax. In every evocation of minimax, each set of features will be added into a TDLeaf object. After a game is finished, TDLeaf will start a learning -- calculate the weights using the formula from lecture slides, and then update all weights. 
 
-In our final submission, all TDLeaf training methods calling are commented and
-will not be called during future running, all trained weights are stored in
-TDLeafLambda class as static constants, so minimax will directly access these
-constants from TDLeafLambda class for calculation of evaluate function.
+To train our agent, we set initial weights 1.0 for all features and put these in a text file. Then we run our game more than 1,000 times on each player’s side against a simple player. We get the old weights from reading file and update the weights after each game and then write to file.  So the weights will be updated after each game. However, there are possibly outliers. To solve this problem, we manually check the reliability of each update. If the current update is not reliable, we will cancel the update.
 
-To verify our agent has improved, we test it with initial weights and with
-trained weights respectively. After a large number of running, we end up with
+In our final submission, all TDLeaf training methods were commented and will not be called during future running. All trained weights are stored in TDLeafLambda class as static constants, so minimax will directly access these constants from TDLeafLambda class for calculating evaluate function.
+
+To verify whether our agent has been improved or not, we tested it with initial weights and against trained weights respectively. After a large number of tests, we ended up with
 this statistical data:
 ---------------------------------------------------
    | winning percentage   |   winning percentage
@@ -55,6 +31,5 @@ this statistical data:
 ---|----------------------|------------------------
  V | 90.7%                | 92.3%
 ---------------------------------------------------
-These percentages are tested by board size = 5. Statistically, in our several
-different cases testing, the percentages will increase while the board size is
-increase.
+These percentages are tested by board size = 5. Statistically, in our several different cases testing, the percentages will increase while the board size is increased.
+
